@@ -1,1 +1,296 @@
-~under construction~
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<script src="http://static.tumblr.com/i2jrupg/yM2ld2ucr/jquery-1.4.4.js" language="javascript" type="text/javascript"></script>
+
+
+
+	<title>{Title}</title>
+	<link rel="shortcut icon" href="{Favicon}">
+	<link rel="alternate" type="application/rss+xml" href="{RSS}">
+	<link rel="stylesheet" href="http://static.tumblr.com/zug3shz/091mdhv9g/styles.css" />
+	
+	{block:Description}
+		<meta name="description" content="{MetaDescription}" />
+	{/block:Description}
+
+
+
+<!--[if IE]>
+	<script src="http://static.tumblr.com/i2jrupg/XP2ld2ugi/html5.js"></script>
+	<![endif]-->
+
+
+	<!-- Meta -->
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="robots" content="index, follow" />
+	<meta name="viewport" content="width=device-width" />
+	<meta name="text:Author Name" content=""/>
+	<meta name="if:Use My Title" content="1"/>
+	<meta name="if:Share On Facebook" content="0"/>
+	<meta name="if:Share On Twitter" content="0"/>
+
+  <meta name="image:Header" content="">
+	
+    <style type="text/css" media="screen">
+        {CustomCSS}
+    </style>
+    
+</head>
+
+<!-- If On A Permalink Page The Body Gets A Class of "inside" -->
+<body{block:PermalinkPage} class="inside"{/block:PermalinkPage}>
+
+<!-- If On Index Page Render Out Normal Header with Optional Custom Title -->
+{block:IndexPage}
+  {block:IfHeaderImage}<header class="image"><a href="/"><img src="{image:Header}" alt="{Title}" /></a></header>{/block:IfHeaderImage}
+  {block:IfNotHeaderImage}
+	<header>
+		<h1>
+			<a href="/">
+        {block:IfUseMyTitle}{Title}{/block:IfUseMyTitle}{block:IfNotUseMyTitle}art<br>SHEsaid{/block:IfNotUseMyTitle}
+      </a>
+		</h1>
+	</header>
+  {/block:IfNotHeaderImage}
+	<nav>
+		<p>{Description}</p>
+	</nav>
+{/block:IndexPage}
+
+
+<!-- Creates DIV for "Footer" with Optional Author Name -->
+{block:IndexPage}
+	<div id = "footer">
+		{block:IfAuthorName}
+			<p>by {text:Author Name}</p>
+		{/block:IfAuthorName}
+	</div>
+{/block:IndexPage}
+
+
+<!-- Opens Article Tag with Class Names Based On Post Type -->
+{block:Posts}
+	<article class="{block:Photo} photo{/block:Photo}{block:Chat} chat{/block:Chat}{block:Video} video{/block:Video}{block:Audio} audio{/block:Audio}{block:Link} link{/block:Link}{block:Quote} quote{/block:Quote}{block:Photoset} photoset{/block:Photoset} {block:Text} textpost{/block:Text}" id="{PostId}">
+
+<!-- Figure Contains Important Content; ie Photos, Audio Player, etc -->
+<figure>
+
+<!-- Photo Figure -->
+{block:Photo}
+	{LinkOpenTag}<img src="{PhotoURL-HighRes}" alt="{PhotoAlt}" />{LinkCloseTag}
+{/block:Photo}
+
+<!-- Photoset Figure -->
+{block:Photoset}
+	<div class = "photoset_container">
+		{Photoset-500}
+	</div>
+{/block:Photoset}
+
+<!-- Chat Figure -->
+{block:Chat}
+	<ul>
+		{block:Lines}
+			<li>{block:Label}{Label}{/block:Label} {Line}</li>
+		{/block:Lines}		
+	</ul>
+{/block:Chat}
+
+<!-- Video Figure -->
+{block:Video}
+	<div class = "video_container">
+		{Video-500}
+	</div>
+{/block:Video}
+
+<!-- Link Figure -->
+{block:Link}
+	<a href = "{URL}">{Name}</a>
+{/block:Link}
+
+<!-- Quote Figure -->
+{block:Quote}
+	<p>"{PlaintextQuote}"</p>
+	<p>{block:Source}- {Source}{/block:Source}</p>
+{/block:Quote}
+
+<!-- Text Figure -->
+{block:Text}
+	{Body}
+{/block:Text}
+
+<!-- Audio Figure - Index Page Generates White Player and Permalink Page Generates Black Player -->
+{block:Audio}
+	{block:IndexPage}
+		{AudioPlayerBlack}
+	{/block:IndexPage}
+
+	{block:PermalinkPage}
+		{AudioPlayerWhite}
+	{/block:PermalinkPage}
+{/block:Audio}
+
+</figure>
+<!-- Figure Content Ends Here -->
+
+<!-- If We Are On A Permalink Page A "permablock" is Opened for Adjusted Title Placement -->
+{block:PermalinkPage}
+	<div id = "permablock">
+		<h1>
+			<a href="/"></a>
+		</h1>
+{/block:PermalinkPage}
+
+<!-- Display Date and Add Dash If On Permalink -->
+{block:Date}
+	<span class="date">{ShortMonth} {DayOfMonth}{block:PermalinkPage} -{/block:PermalinkPage}</span>
+{/block:Date}
+
+<!-- Container for Posts with Captions -->
+{block:Caption}
+	<div id = "caption">
+		<p>{Caption}</p>
+	</div>
+{/block:Caption}
+
+<!-- Container for Posts with Titles -->
+{block:Title}
+	<div id = "title">
+		<blockquote>{PlaintextTitle}</blockquote>
+	</div>
+{/block:Title}
+
+<!-- Open Aside for Other Content If on Index Page -->
+{block:IndexPage}
+	<aside>
+{/block:IndexPage}
+
+<!-- If On Permalink Page Open "face_tags" to Contain Share To... and Tags -->
+{block:PermalinkPage}
+	<div id = "face_tags">
+{/block:PermalinkPage}
+
+<!-- Display ID3 Tags for Audio Posts -->
+{block:Audio}
+	<ul class="id3">
+		{block:Artist}
+			<li>{Artist}</li>
+		{/block:Artist}
+		{block:TrackName}
+			<li>{TrackName}</li>
+		{/block:TrackName}
+		{block:Album}
+			<li>{Album}</li>
+		{/block:Album}
+    </ul>
+{/block:Audio}
+
+<!-- Displaying Meta Data If Any -->
+<h3>Meta:</h3>
+
+<ul class="meta">
+
+<!-- Display Share On Facebook -->
+	{block:IfShareOnFacebook}
+		<li><a href="http://www.facebook.com/sharer.php?u={Permalink}&t={Title}">Share On Facebook</a></li>
+	{/block:IfShareOnFacebook}
+	
+<!-- Display Share On Twitter -->
+    {block:IfShareOnTwitter}
+		<li><a href="http://twitter.com/home?status=Currently reading {Permalink}">Share On Twitter</a></li>
+	{/block:IfShareOnTwitter}
+	
+<!-- And If We're On The Index Page, Go Ahead and Show The Permalink -->
+    {block:IndexPage}
+		<li><a class="permalink" href="{/block:IndexPage}{block:IndexPage}{Permalink}{/block:IndexPage}{block:IndexPage}{block:PermalinkPage}{PhotoURL-HighRes}{/block:PermalinkPage}">permalink</a></li>
+	{/block:IndexPage}			
+</ul>
+<!-- Closing Meta -->
+	
+<!-- Are There Any Tags To Show? -->		
+{block:HasTags}
+
+	<!-- If We Are On The Index Page Show The Tags Label -->
+	{block:IndexPage}
+		<h4>Tags:</h4>
+	{/block:IndexPage}
+    <ul class="tags">
+		{block:Tags}
+			<li><a href="{TagURLChrono}"><i>#</i>{Tag}</a></li>
+		{/block:Tags}
+    </ul>
+{/block:HasTags}
+
+<!-- Close Up "face_tags" -->
+{block:PermalinkPage}
+	</div>
+{/block:PermalinkPage}
+
+<!-- And the Aside -->
+{block:IndexPage}
+	</aside>
+{/block:IndexPage}
+
+<!-- Website Description On Permalink Page -->
+{block:PermalinkPage}
+	<p id = "description">{PlaintextDescription}</p>
+{/block:PermalinkPage}
+
+<!-- Close Up "permablock" -->
+{block:PermalinkPage}
+	</div>
+{/block:PermalinkPage}
+
+<!-- Navigation Inside Permalinks -->
+{block:PermalinkPagination}
+	<ul class="permalink_nav">
+		{block:NextPost}
+			<li id="newer"><a href="{NextPost}">&laquo;</a></li>
+		{/block:NextPost}					
+		{block:PreviousPost}
+			<li id="older"><a href="{PreviousPost}">&raquo;</a></li>
+		{/block:PreviousPost}
+	</ul>
+{/block:PermalinkPagination}
+
+<!-- Closing Article Tag -->
+</article>
+
+<!-- No More Posts -->
+{/block:Posts}
+
+<!-- Copyright, Page Navigation, Roll Credits -->
+<div id="copyright">
+	{block:Pagination}
+		<ul id="pagination">
+			{block:PreviousPage}
+				<li id="newer"><a href="{PreviousPage}"><strong>&laquo;</strong> Previous Page</a></li>
+			{/block:PreviousPage}
+			<li id="youarehere">Page {CurrentPage} of {TotalPages}</li>
+			{block:NextPage}
+				<li id="older"><a href="{NextPage}">Next Page <strong>&raquo;</strong></a></li>
+			{/block:NextPage}	
+		</ul>
+	{/block:Pagination}	
+ArtSheSaid brought to you by <a target="_blank" href="http://anntaylor.com/">Ann Taylor</a> and <a target="_blank" href="http://flavorpill.com/">Flavorpill</a>{block:IndexPage} / <a target="_blank" href="http://alldayeveryday.com/">branding and design by <span id = "ade">ALLDAYEVERYDAY</span></a>{/block:IndexPage}
+</div>
+
+<script>$('#permablock h1 a').prepend($("title").text());</script>
+
+<!-- JS to Resize any Videos and Photosets -->
+<script>
+	var $origVideo = $(".video_container object, .photoset_container embed, .video_container embed, .video_container iframe");
+	var aspectRatio = $origVideo.attr("height") / $origVideo.attr("width");
+
+	$(window).resize(function() {
+	        var wrapWidth = $(".video_container, .photoset_container").width();
+	        $origVideo
+	                .width(wrapWidth)
+	                .height(wrapWidth * aspectRatio);
+	}).trigger("resize");
+</script>
+</body>
+</html>
